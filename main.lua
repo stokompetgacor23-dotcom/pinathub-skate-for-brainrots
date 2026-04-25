@@ -121,7 +121,7 @@ if not WindUI then
 end
 
 local Window = WindUI:CreateWindow({
-    Title = "PinatHub | Brainrots",
+    Title = "PinatHub",
     Author = "Skateboard for Brainrots",
     Folder = "pinathub",
     NewElements = true,
