@@ -1,7 +1,7 @@
 repeat task.wait() until game:IsLoaded()
 
 -- =======================================================
--- PINATHUB - BRAINROTS COLLECTOR
+-- PINATHUB - BRAINROTS COLLECTOR (WINDUI v2)
 -- =======================================================
 
 -- ============================================
@@ -49,8 +49,8 @@ logoGui.Parent = player:WaitForChild("PlayerGui", 5)
 
 local logoButton = Instance.new("ImageButton")
 logoButton.Name = "LogoButton"
-logoButton.Size = UDim2.new(0, 60, 0, 60)
-logoButton.Position = UDim2.new(0.5, -30, 0.5, -30)
+logoButton.Size = UDim2.new(0, 50, 0, 50)
+logoButton.Position = UDim2.new(0.5, -25, 0.5, -25)
 logoButton.BackgroundTransparency = 1
 logoButton.Image = "rbxassetid://118264723961739"
 logoButton.ImageColor3 = Color3.fromRGB(180, 0, 255)
@@ -62,8 +62,8 @@ uiCorner.CornerRadius = UDim.new(1, 0)
 uiCorner.Parent = logoButton
 
 -- Animasi kecil
-local hoverTween = TweenService:Create(logoButton, TweenInfo.new(0.2), {Size = UDim2.new(0, 70, 0, 70)})
-local unhoverTween = TweenService:Create(logoButton, TweenInfo.new(0.2), {Size = UDim2.new(0, 60, 0, 60)})
+local hoverTween = TweenService:Create(logoButton, TweenInfo.new(0.2), {Size = UDim2.new(0, 60, 0, 60)})
+local unhoverTween = TweenService:Create(logoButton, TweenInfo.new(0.2), {Size = UDim2.new(0, 50, 0, 50)})
 
 logoButton.MouseEnter:Connect(function()
     hoverTween:Play()
@@ -106,29 +106,21 @@ UIS.InputChanged:Connect(function(input)
 end)
 
 -- ============================================
--- WIND UI SETUP
+-- WIND UI v2 SETUP
 -- ============================================
-local WindUI = (function()
-    local success, result = pcall(function()
-        return loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua", true))()
-    end)
-    return success and result or nil
-end)()
-
-if not WindUI then 
-    print("Failed to load WindUI Library")
-    return 
-end
+local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
 
 local Window = WindUI:CreateWindow({
     Title = "PinatHub",
-    Author = "Skateboard for Brainrots",
+    Author = "@viunze on tiktok",
     Folder = "pinathub",
-    NewElements = true,
-    OpenButton = {
-        Enabled = false,
-    },
-    Topbar = { Height = 44, ButtonsType = "Default" }
+    Size = UDim2.fromOffset(500, 350),
+    Transparent = true,
+    Theme = "Dark",
+    IsOpenButtonEnabled = false,
+    UserEnabled = true,
+    HasOutline = true,
+    SideBarWidth = 150,
 })
 
 Window:Tag({ Title = "@viunze on tiktok", Icon = "star", Color = Color3.fromHex("#BA00FF"), Border = true })
@@ -149,10 +141,10 @@ logoButton.MouseButton1Click:Connect(function()
 end)
 
 -- Create Tabs
-local PlayerTab = Window:Tab({ Title = "Player", Icon = "user", IconColor = Color3.fromHex("#30FF6A"), Border = true })
-local BrainrotTab = Window:Tab({ Title = "Brainrots", Icon = "brain", IconColor = Color3.fromHex("#FF6B9D"), Border = true })
-local MiscTab = Window:Tab({ Title = "Misc", Icon = "settings", IconColor = Color3.fromHex("#9B59B6"), Border = true })
-local CommunityTab = Window:Tab({ Title = "Community", Icon = "message-circle", IconColor = Color3.fromHex("#9B59B6"), Border = true })
+local PlayerTab = Window:Tab({ Title = "Player", Icon = "user" })
+local BrainrotTab = Window:Tab({ Title = "Brainrots", Icon = "brain" })
+local MiscTab = Window:Tab({ Title = "Misc", Icon = "settings" })
+local CommunityTab = Window:Tab({ Title = "Community", Icon = "users" })
 
 -- ============================================
 -- RESET CHARACTER FUNCTION
@@ -225,7 +217,7 @@ local movementSection = PlayerTab:Section({ Title = "Movement" })
 
 movementSection:Toggle({
     Title = "WalkSpeed",
-    Default = false,
+    Value = false,
     Callback = function(value)
         if value then
             startWalkSpeed()
@@ -237,8 +229,9 @@ movementSection:Toggle({
 
 movementSection:Slider({
     Title = "WalkSpeed Value",
-    Description = "Custom walk speed (16-1000)",
+    Desc = "Custom walk speed (16-1000)",
     Value = { Min = 16, Default = 50, Max = 1000 },
+    Rounding = 0,
     Callback = function(value)
         walkSpeedValue = value
         if walkSpeedActive then
@@ -249,7 +242,7 @@ movementSection:Slider({
 
 movementSection:Toggle({
     Title = "Infinite Jump",
-    Default = false,
+    Value = false,
     Callback = function(value)
         InfiniteJumpEnabled = value
     end
@@ -274,7 +267,7 @@ local brainrotSection = BrainrotTab:Section({ Title = "Brainrot Automation" })
 -- Auto collect by firing touch interest
 brainrotSection:Toggle({
     Title = "Auto Collect",
-    Default = false,
+    Value = false,
     Callback = function(value)
         flags.autoCollect = value
         if value then
@@ -302,7 +295,7 @@ brainrotSection:Toggle({
 -- Hide Notifications
 brainrotSection:Toggle({
     Title = "Hide Notifications",
-    Default = false,
+    Value = false,
     Callback = function(value)
         flags.hideNotifs = value
         if value then
@@ -333,7 +326,6 @@ brainrotSection:Divider()
 -- Rarities dropdown (MULTI SELECT)
 brainrotSection:Dropdown({
     Title = "Brainrot Rarities",
-    Icon = "sparkles",
     Multi = true,
     Values = raritiesList,
     Value = {"All"},
@@ -345,7 +337,7 @@ brainrotSection:Dropdown({
 -- Auto Grab Brainrots
 brainrotSection:Toggle({
     Title = "Auto Grab Brainrots",
-    Default = false,
+    Value = false,
     Callback = function(value)
         flags.autoGrabBrainrots = value
         if value then
@@ -410,7 +402,7 @@ local antiAFKConn = nil
 
 afkSection:Toggle({
     Title = "Anti-AFK",
-    Default = false,
+    Value = false,
     Callback = function(value)
         antiAFKActive = value
         if value then
