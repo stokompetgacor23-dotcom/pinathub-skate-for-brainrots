@@ -512,7 +512,7 @@ whatsappSection:Button({
     Title = "Join WhatsApp Group",
     Callback = function()
         if setclipboard then
-            setclipboard("https://chat.whatsapp.com/I8hG44FLgrRAwQcS3lvEft")
+            setclipboard("https://chat.whatsapp.com/Cxr7poqqID6Ha6C2MfFOMU")
             Window:Notify("Success", "WhatsApp link copied to clipboard!", 3)
         else
             Window:Notify("Error", "Clipboard not supported!", 2)
